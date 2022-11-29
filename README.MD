@@ -5,6 +5,7 @@ This repo use for support event scheduler service for set event scheduler.
 ## Features
 
 - Set event
+- Get event
 - Update expired event
 - Update data event
 - Delete event
@@ -12,7 +13,7 @@ This repo use for support event scheduler service for set event scheduler.
 ## Instalation
 
 ```go
-go get .....
+go get github.com/LukmanulHakim18/gorooster-client
 ```
 
 ## Quickstart

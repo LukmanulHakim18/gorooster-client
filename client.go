@@ -4,6 +4,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/LukmanulHakim18/gorooster-client/helpers"
 	"github.com/LukmanulHakim18/gorooster-client/implementors"
 	"github.com/LukmanulHakim18/gorooster-client/models"
 
@@ -24,6 +25,9 @@ var (
 )
 
 func GetRedisClient(clientName, host, pass string, db int) Gorooster {
+	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
+		panic("client name can not contain ':' ")
+	}
 	once.Do(func() {
 		if goroosterRedis == nil {
 			redisDB := redis.NewClient(&redis.Options{

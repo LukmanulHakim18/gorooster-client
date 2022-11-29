@@ -116,3 +116,22 @@ func TestDeleteEventExpired(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestErrorClinetName(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	GetRedisClient("must:error", redisHost, Pass, DB)
+
+}
+func TestErrorKey(t *testing.T) {
+
+	client := GetRedisClient(ClientName, redisHost, Pass, DB)
+	if err := client.SetEvent("event:error", 10*time.Second, models.Event{}); err == nil {
+		t.Fail()
+	}
+
+}
