@@ -1,6 +1,6 @@
-# Event Scheduler Client
+# Gorooster-client
 
-This repo use for support event scheduler service for set event scheduler.
+This repo use for support event scheduler service [Gorooster](https://github.com/LukmanulHakim18/gorooster) for set event scheduler.
 
 ## Features
 
@@ -12,6 +12,14 @@ This repo use for support event scheduler service for set event scheduler.
 
 ## Instalation
 
+Gorooster requires a Go version with modules support. So make sure to initialize a Go module:
+
+```go
+go mod init github.com/my/repo
+```
+
+And instal the lib:
+
 ```go
 go get github.com/LukmanulHakim18/gorooster-client
 ```
@@ -20,44 +28,60 @@ go get github.com/LukmanulHakim18/gorooster-client
 
 ```go
 import (
-	"github.com/LukmanulHakim18/gorooster-client/models"
+	"fmt"
 	"time"
+
+	client "github.com/LukmanulHakim18/gorooster-client"
+	clientModels "github.com/LukmanulHakim18/gorooster-client/models"
 )
 
 func ExampleClient() {
-	dataRaw := map[string]any{
-		"location": map[string]any{
+	clientName := "rooster_weakup" // client name can't contains ':'
+	gc := client.GetRedisClient(clientName, "localhost:6379", "", 14)
+	dataRaw := map[string]interface{}{
+		"location": map[string]interface{}{
 			"latitude":  -6.246761122,
 			"longitude": 106.8256878,
 		},
 		"customer_id": "BB12345678",
 		"cid":         "021",
 	}
-	job := models.JobAPI{
-		Endpoint: "https://stgapi4.bluebird.id/odrd/trip/newid",
-		Method:   models.METHOD_POST,
+	job := clientModels.JobAPI{
+		Endpoint: "https://gorooster.id/foo/bar",
+		Method:   clientModels.METHOD_POST,
 		Data:     dataRaw,
-		Headers: []models.Header{
-			models.Header{
+		Headers: []clientModels.Header{
+			clientModels.Header{
 				Key:   "Token",
-				Value: "mybb-odrd-token",
+				Value: "my-token",
 			},
-			models.Header{
+			clientModels.Header{
 				Key:   "Content-Type",
 				Value: "application/json",
 			},
 		},
 	}
 
-	dataEvent := models.Event{
+	dataEvent := clientModels.Event{
 		Name:    "cancel_order",
 		Id:      "101ec8dc-8de2-448c-b64c-6f0bc49cabff",
 		Type:    "api_event",
 		JobData: job,
 	}
-	client := GetClient("Test", "localhost:6379", "", 3)
-	if err := client.SetEvent("coba-coba", 131*time.Second, dataEvent); err != nil {
-		t.Fail()
+	eventname:="test-event-1"  // event name can't contains ':' and must uniq
+	err := gc.SetEvent(eventname, 10*time.Second, dataEvent)
+	if err != nil {
+		fmt.Print(err.Error())
 	}
 }
+```
+
+## Run the test
+
+Make sure your redis started and your config was correct
+
+Just run comment below:
+
+```go
+go test
 ```
