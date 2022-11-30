@@ -17,7 +17,7 @@ type GoroosterRedisImpl struct {
 	ClientName string
 }
 
-func (res GoroosterRedisImpl) GetEvent(key string, target any) (ttl time.Duration, err error) {
+func (res GoroosterRedisImpl) GetEvent(key string, target interface{}) (ttl time.Duration, err error) {
 	if ok := helpers.ValidatorClinetNameAndKey(key); !ok {
 		err = fmt.Errorf("key can not contain ':'")
 		return

@@ -21,10 +21,10 @@ const (
 )
 
 type JobAPI struct {
-	Endpoint string     `json:"endpoint"`
-	Headers  []Header   `json:"headers"`
-	Method   MethodType `json:"method"`
-	Data     any        `json:"data"`
+	Endpoint string      `json:"endpoint"`
+	Headers  []Header    `json:"headers"`
+	Method   MethodType  `json:"method"`
+	Data     interface{} `json:"data"`
 }
 
 // Check if methode support or not

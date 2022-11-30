@@ -12,12 +12,12 @@ var (
 	redisHost  = "localhost:6379"
 	Pass       = ""
 	DB         = 14
-	ClientName = "order_processor"
+	ClientName = "rooster_client_test"
 )
 
 func TestSetEvent(t *testing.T) {
-	dataRaw := map[string]any{
-		"location": map[string]any{
+	dataRaw := map[string]interface{}{
+		"location": map[string]interface{}{
 			"latitude":  -6.246761122,
 			"longitude": 106.8256878,
 		},
@@ -25,13 +25,13 @@ func TestSetEvent(t *testing.T) {
 		"cid":         "021",
 	}
 	job := models.JobAPI{
-		Endpoint: "https://stgapi4.bluebird.id/odrd/trip/newid",
+		Endpoint: "https://foo.id/bar",
 		Method:   models.METHOD_POST,
 		Data:     dataRaw,
 		Headers: []models.Header{
 			models.Header{
 				Key:   "Token",
-				Value: "mybb-odrd-token",
+				Value: "my-token",
 			},
 			models.Header{
 				Key:   "Content-Type",
@@ -43,7 +43,7 @@ func TestSetEvent(t *testing.T) {
 	dataEvent := models.Event{
 		Name:    "cancel_order",
 		Id:      "101ec8dc-8de2-448c-b64c-6f0bc49cabff",
-		Type:    "api_event",
+		Type:    models.API_EVENT,
 		JobData: job,
 	}
 	client := GetRedisClient(ClientName, redisHost, Pass, DB)
@@ -66,15 +66,15 @@ func TestGetEvent(t *testing.T) {
 }
 func TestUpdateEventExpired(t *testing.T) {
 	client := GetRedisClient(ClientName, redisHost, Pass, DB)
-	if err := client.UpdateExpiredEvent(key, 100*time.Second); err != nil {
+	if err := client.UpdateExpiredEvent(key, 10*time.Second); err != nil {
 		t.Log(err.Error())
 		t.Fail()
 	}
 }
 
 func TestUpdateDataEvent(t *testing.T) {
-	dataRaw := map[string]any{
-		"location": map[string]any{
+	dataRaw := map[string]interface{}{
+		"location": map[string]interface{}{
 			"latitude":  -6.246761122,
 			"longitude": 16.8256878,
 		},
@@ -109,7 +109,7 @@ func TestUpdateDataEvent(t *testing.T) {
 	}
 }
 
-func TestDeleteEventExpired(t *testing.T) {
+func TestDeleteEvent(t *testing.T) {
 	client := GetRedisClient(ClientName, redisHost, Pass, DB)
 	if err := client.DeleteEvent(key); err != nil {
 		t.Log(err.Error())

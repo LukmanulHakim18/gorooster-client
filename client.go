@@ -12,10 +12,23 @@ import (
 )
 
 type Gorooster interface {
-	GetEvent(key string, target any) (ttl time.Duration, err error)
+	// GetEvent returning ttl and event data.
+	// And if data stil any in redis
+	GetEvent(key string, target interface{}) (ttl time.Duration, err error)
+
+	// SetEvent insert your event to redis.
+	// And waiting to fire
 	SetEvent(key string, expired time.Duration, event models.Event) error
+
+	// UpdateExpiredEvent for update ttl.
+	// And rescheduling your event to fire
 	UpdateExpiredEvent(key string, expired time.Duration) error
+
+	// Update data event if still exist in redis
 	UpdateDataEvent(key string, event models.Event) error
+
+	// Deleted your event if still exist in redis
+	// And cancel your event to fire
 	DeleteEvent(key string) error
 }
 
