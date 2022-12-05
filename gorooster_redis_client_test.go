@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	key        = "202ec8dc-8de2-448c-b64c-6f0bc49cabffa"
+	key        = "202ec8dc-8de2-448c-b64c-6f0bc49cabff"
 	redisHost  = "localhost:6379"
 	Pass       = ""
 	DB         = 14
@@ -47,7 +47,7 @@ func TestSetEvent(t *testing.T) {
 		JobData: job,
 	}
 	client := GetRedisClient(ClientName, redisHost, Pass, DB)
-	if err := client.SetEvent(key, 100*time.Second, dataEvent); err != nil {
+	if err := client.SetEvent(key, 100*time.Minute, dataEvent); err != nil {
 		t.Fail()
 	}
 }
@@ -64,9 +64,9 @@ func TestGetEvent(t *testing.T) {
 	}
 	t.Log(ttl, event)
 }
-func TestUpdateEventExpired(t *testing.T) {
+func TestUpdateEventRelease(t *testing.T) {
 	client := GetRedisClient(ClientName, redisHost, Pass, DB)
-	if err := client.UpdateExpiredEvent(key, 10*time.Second); err != nil {
+	if err := client.UpdateReleaseEvent(key, 10*time.Second); err != nil {
 		t.Log(err.Error())
 		t.Fail()
 	}
