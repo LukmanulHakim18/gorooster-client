@@ -1,6 +1,7 @@
 package client
 
 import (
+	"net/http"
 	"sync"
 	"time"
 
@@ -18,11 +19,11 @@ type Gorooster interface {
 
 	// SetEvent insert your event to redis.
 	// And waiting to fire
-	SetEvent(key string, expired time.Duration, event models.Event) error
+	SetEvent(key string, eventReleaseIn time.Duration, event models.Event) error
 
-	// UpdateExpiredEvent for update ttl.
+	// UpdateReleaseEvent for update ttl.
 	// And rescheduling your event to fire
-	UpdateExpiredEvent(key string, expired time.Duration) error
+	UpdateReleaseEvent(key string, eventReleaseIn time.Duration) error
 
 	// Update data event if still exist in redis
 	UpdateDataEvent(key string, event models.Event) error
@@ -34,14 +35,16 @@ type Gorooster interface {
 
 var (
 	goroosterRedis *implementors.GoroosterRedisImpl
-	once           sync.Once
+	goroosterAPI   *implementors.GoroosterAPIImpl
+	onceRedis      sync.Once
+	onceAPI        sync.Once
 )
 
 func GetRedisClient(clientName, host, pass string, db int) Gorooster {
 	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
 		panic("client name can not contain ':' ")
 	}
-	once.Do(func() {
+	onceRedis.Do(func() {
 		if goroosterRedis == nil {
 			redisDB := redis.NewClient(&redis.Options{
 				Addr:     host,
@@ -55,4 +58,24 @@ func GetRedisClient(clientName, host, pass string, db int) Gorooster {
 		}
 	})
 	return goroosterRedis
+}
+
+func GetAPIClient(clientName, baseUrl, apiKey string) Gorooster {
+	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
+		panic("client name can not contain ':' ")
+	}
+	onceAPI.Do(func() {
+		if goroosterAPI == nil {
+			c := http.Client{
+				Timeout: time.Duration(2) * time.Second,
+			}
+
+			goroosterAPI = &implementors.GoroosterAPIImpl{
+				ClientName: clientName,
+				Client:     &c,
+				BaseUrl:    baseUrl,
+			}
+		}
+	})
+	return goroosterAPI
 }
