@@ -29,11 +29,11 @@ func TestSetEvent(t *testing.T) {
 		Method:   models.METHOD_POST,
 		Data:     dataRaw,
 		Headers: []models.Header{
-			models.Header{
+			{
 				Key:   "Token",
 				Value: "my-token",
 			},
-			models.Header{
+			{
 				Key:   "Content-Type",
 				Value: "application/json",
 			},
@@ -86,11 +86,11 @@ func TestUpdateDataEvent(t *testing.T) {
 		Method:   models.METHOD_POST,
 		Data:     dataRaw,
 		Headers: []models.Header{
-			models.Header{
+			{
 				Key:   "Token",
 				Value: "mybb-odrd-token",
 			},
-			models.Header{
+			{
 				Key:   "Content-Type",
 				Value: "application/json",
 			},
