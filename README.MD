@@ -26,7 +26,7 @@ go get github.com/LukmanulHakim18/gorooster-client
 
 # Quickstart
 
-## Connection via redi
+## Connection via redis
 
 ```go
 import (
