@@ -1,4 +1,4 @@
-module github.com/LukmanulHakim18/gorooster-client
+module git.bluebird.id/mybb/gorooster-client
 
 go 1.19
 

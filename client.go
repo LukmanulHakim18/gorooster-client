@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/LukmanulHakim18/gorooster-client/helpers"
-	"github.com/LukmanulHakim18/gorooster-client/implementors"
-	"github.com/LukmanulHakim18/gorooster-client/models"
+	"git.bluebird.id/mybb/gorooster-client/helpers"
+	"git.bluebird.id/mybb/gorooster-client/implementors"
+	"git.bluebird.id/mybb/gorooster-client/models"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/LukmanulHakim18/gorooster-client/models"
+	"git.bluebird.id/mybb/gorooster-client/models"
 )
 
 var (
