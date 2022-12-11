@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/helpers"
-	"git.bluebird.id/mybb/gorooster-client/models"
+	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
+	"git.bluebird.id/mybb/gorooster-client/v2/models"
 )
 
 type GoroosterAPIImpl struct {
@@ -132,4 +132,36 @@ func CekResponseHttp(res *http.Response) (err error) {
 	}
 	return nil
 
+}
+
+func (impl GoroosterAPIImpl) SetEventAt(key string, eventReleaseAt time.Time, event models.Event) error {
+	endponit := fmt.Sprintf("%s/event/release_at/%s/%d", impl.BaseUrl, key, eventReleaseAt.Unix())
+	payload, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	body := bytes.NewReader(payload)
+	req, err := http.NewRequest("POST", endponit, body)
+	if err != nil {
+		return err
+	}
+	if _, err := impl.runRequest(req); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (impl GoroosterAPIImpl) UpdateReleaseEventAt(key string, eventReleaseAt time.Time) (err error) {
+	endponit := fmt.Sprintf("%s/event/release_at/%s/%d", impl.BaseUrl, key, eventReleaseAt.Unix())
+	body := bytes.NewReader(nil)
+	req, err := http.NewRequest("PUT", endponit, body)
+	if err != nil {
+		return
+	}
+	_, err = impl.runRequest(req)
+	if err != nil {
+		return
+	}
+	return nil
 }

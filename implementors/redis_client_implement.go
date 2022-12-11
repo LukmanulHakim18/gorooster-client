@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/helpers"
-	"git.bluebird.id/mybb/gorooster-client/models"
+	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
+	"git.bluebird.id/mybb/gorooster-client/v2/models"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -5,11 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/helpers"
-	"git.bluebird.id/mybb/gorooster-client/implementors"
-	"git.bluebird.id/mybb/gorooster-client/models"
-
-	"github.com/go-redis/redis/v8"
+	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
+	"git.bluebird.id/mybb/gorooster-client/v2/implementors"
+	"git.bluebird.id/mybb/gorooster-client/v2/models"
 )
 
 type Gorooster interface {
@@ -20,10 +18,16 @@ type Gorooster interface {
 	// SetEvent insert your event to redis.
 	// And waiting to fire
 	SetEvent(key string, eventReleaseIn time.Duration, event models.Event) error
+	// SetEvent insert your event to redis.
+	// And waiting to fire
+	SetEventAt(key string, eventReleaseIn time.Time, event models.Event) error
 
 	// UpdateReleaseEvent for update ttl.
 	// And rescheduling your event to fire
 	UpdateReleaseEvent(key string, eventReleaseIn time.Duration) error
+	// UpdateReleaseEvent for update ttl.
+	// And rescheduling your event to fire
+	UpdateReleaseEventAt(key string, eventReleaseIn time.Time) error
 
 	// Update data event if still exist in redis
 	UpdateDataEvent(key string, event models.Event) error
@@ -34,31 +38,9 @@ type Gorooster interface {
 }
 
 var (
-	goroosterRedis *implementors.GoroosterRedisImpl
-	goroosterAPI   *implementors.GoroosterAPIImpl
-	onceRedis      sync.Once
-	onceAPI        sync.Once
+	goroosterAPI *implementors.GoroosterAPIImpl
+	onceAPI      sync.Once
 )
-
-func GetRedisClient(clientName, host, pass string, db int) Gorooster {
-	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
-		panic("client name can not contain ':' ")
-	}
-	onceRedis.Do(func() {
-		if goroosterRedis == nil {
-			redisDB := redis.NewClient(&redis.Options{
-				Addr:     host,
-				DB:       db,
-				Password: pass,
-			})
-			goroosterRedis = &implementors.GoroosterRedisImpl{
-				DB:         redisDB,
-				ClientName: clientName,
-			}
-		}
-	})
-	return goroosterRedis
-}
 
 func GetAPIClient(clientName, baseUrl, apiKey string) Gorooster {
 	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
