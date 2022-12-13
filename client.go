@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
-	"git.bluebird.id/mybb/gorooster-client/v2/implementors"
-	"git.bluebird.id/mybb/gorooster-client/v2/models"
+	"github.com/LukmanulHakim18/gorooster-client/helpers"
+	"github.com/LukmanulHakim18/gorooster-client/implementors"
+	"github.com/LukmanulHakim18/gorooster-client/models"
 )
 
 type Gorooster interface {

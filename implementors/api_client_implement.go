@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
-	"git.bluebird.id/mybb/gorooster-client/v2/models"
+	"github.com/LukmanulHakim18/gorooster-client/helpers"
+	"github.com/LukmanulHakim18/gorooster-client/models"
 )
 
 type GoroosterAPIImpl struct {
