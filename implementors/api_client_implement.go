@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
-	"git.bluebird.id/mybb/gorooster-client/v2/models"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/helpers"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 type GoroosterAPIImpl struct {
@@ -39,14 +39,18 @@ func (impl GoroosterAPIImpl) GetEvent(key string, target interface{}) (eventRele
 	return
 }
 
-func (impl GoroosterAPIImpl) SetEvent(key string, eventReleaseIn time.Duration, event models.Event) error {
-	endponit := fmt.Sprintf("%s/event/%s/%s", impl.BaseUrl, key, eventReleaseIn.String())
-	payload, err := json.Marshal(event)
+func (impl GoroosterAPIImpl) SetEventReleaseIn(key string, eventReleaseIn time.Duration, event models.Event) error {
+	endponit := fmt.Sprintf("%s/event/relin/%s", impl.BaseUrl, key)
+	body := map[string]interface{}{
+		"event":      event,
+		"release_in": eventReleaseIn.String(),
+	}
+	payload, err := json.Marshal(body)
 	if err != nil {
 		return err
 	}
-	body := bytes.NewReader(payload)
-	req, err := http.NewRequest("POST", endponit, body)
+	bodyBytes := bytes.NewReader(payload)
+	req, err := http.NewRequest("POST", endponit, bodyBytes)
 	if err != nil {
 		return err
 	}
@@ -57,9 +61,13 @@ func (impl GoroosterAPIImpl) SetEvent(key string, eventReleaseIn time.Duration, 
 	return nil
 }
 
-func (impl GoroosterAPIImpl) UpdateReleaseEvent(key string, eventReleaseIn time.Duration) (err error) {
-	endponit := fmt.Sprintf("%s/event/%s/%s", impl.BaseUrl, key, eventReleaseIn.String())
-	body := bytes.NewReader(nil)
+func (impl GoroosterAPIImpl) UpdateReleaseEventIn(key string, eventReleaseIn time.Duration) (err error) {
+	endponit := fmt.Sprintf("%s/event/%s", impl.BaseUrl, key)
+	data := map[string]interface{}{
+		"release_in": eventReleaseIn.String(),
+	}
+	payload, _ := json.Marshal(data)
+	body := bytes.NewReader(payload)
 	req, err := http.NewRequest("PUT", endponit, body)
 	if err != nil {
 		return
@@ -134,9 +142,13 @@ func CekResponseHttp(res *http.Response) (err error) {
 
 }
 
-func (impl GoroosterAPIImpl) SetEventAt(key string, eventReleaseAt time.Time, event models.Event) error {
-	endponit := fmt.Sprintf("%s/event/release_at/%s/%d", impl.BaseUrl, key, eventReleaseAt.Unix())
-	payload, err := json.Marshal(event)
+func (impl GoroosterAPIImpl) SetEventReleaseAt(key string, eventReleaseAt time.Time, event models.Event) error {
+	endponit := fmt.Sprintf("%s/event/relat/%s", impl.BaseUrl, key)
+	data := map[string]interface{}{
+		"event":      event,
+		"release_at": eventReleaseAt.Unix(),
+	}
+	payload, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
@@ -153,8 +165,12 @@ func (impl GoroosterAPIImpl) SetEventAt(key string, eventReleaseAt time.Time, ev
 }
 
 func (impl GoroosterAPIImpl) UpdateReleaseEventAt(key string, eventReleaseAt time.Time) (err error) {
-	endponit := fmt.Sprintf("%s/event/release_at/%s/%d", impl.BaseUrl, key, eventReleaseAt.Unix())
-	body := bytes.NewReader(nil)
+	endponit := fmt.Sprintf("%s/event/relat/%s", impl.BaseUrl, key)
+	data := map[string]interface{}{
+		"release_at": eventReleaseAt.Unix(),
+	}
+	payload, _ := json.Marshal(data)
+	body := bytes.NewReader(payload)
 	req, err := http.NewRequest("PUT", endponit, body)
 	if err != nil {
 		return

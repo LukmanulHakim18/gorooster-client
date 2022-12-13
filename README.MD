@@ -4,9 +4,11 @@ This repo use for support event scheduler service [Gorooster](https://github.com
 
 # Features
 
-- Set event
+- Set event release In
+- Set event release At
+- Update release event in
+- Update release event an
 - Get event
-- Update expired event
 - Update data event
 - Delete event
 
@@ -21,7 +23,7 @@ go mod init github.com/my/repo
 And instal the lib
 
 ```go
-go get git.bluebird.id/mybb/gorooster-client/v2
+go get github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2
 ```
 
 # Quickstart
@@ -33,8 +35,8 @@ import (
 	"fmt"
 	"time"
 
-	client "git.bluebird.id/mybb/gorooster-client/v2"
-	clientModels "git.bluebird.id/mybb/gorooster-client/v2/models"
+	client "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2"
+	clientModels "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 func ExampleClient() {
@@ -85,13 +87,13 @@ import (
 	"fmt"
 	"time"
 
-	client "git.bluebird.id/mybb/gorooster-client/v2"
-	clientModels "git.bluebird.id/mybb/gorooster-client/v2/models"
+	client "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2"
+	clientModels "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 func ExampleClient() {
 	clientName := "rooster_weakup" // client name can't contains ':'
-	gc := client.GetRedisClient(clientName, "localhost:6379", "", 14)
+	gc := client.GetAPIClient("Timesheet", "http://localhost:1407","")
 	dataRaw := map[string]interface{}{
 		"location": map[string]interface{}{
 			"latitude":  -6.246761122,

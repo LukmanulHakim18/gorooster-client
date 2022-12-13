@@ -1,12 +1,11 @@
 package implementors
 
 import (
-	"fmt"
 	"net/http"
 	"testing"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/v2/models"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 var (
@@ -62,8 +61,20 @@ func TestGetEventApi(t *testing.T) {
 	}
 	t.Log(eventReleaseIn, event)
 }
-func TestCreateEventApi(t *testing.T) {
-	if err := client.SetEvent("CROW-10X", 30*time.Hour, dataEvent); err != nil {
+func TestCreateEventRelinApi(t *testing.T) {
+	if err := client.SetEventReleaseIn("CROW-10X", 30*time.Hour, dataEvent); err != nil {
+		t.Log(err.Error())
+		t.Fail()
+	}
+}
+func TestCreateEventRelatApi(t *testing.T) {
+	if err := client.SetEventReleaseAt("CROW-11X", time.Now().Add(1*time.Hour), dataEvent); err != nil {
+		t.Log(err.Error())
+		t.Fail()
+	}
+}
+func TestUpdateEventRelatApi(t *testing.T) {
+	if err := client.UpdateReleaseEventAt("CROW-11X", time.Now().Add(1*time.Hour)); err != nil {
 		t.Log(err.Error())
 		t.Fail()
 	}
@@ -75,7 +86,7 @@ func TestUpdateReleaseEventApi(t *testing.T) {
 		ClientName: "ROOSTER-CLIENT-TEST",
 		Client:     &http.Client{},
 	}
-	err := client.UpdateReleaseEvent("CROW-10X", 10*time.Hour)
+	err := client.UpdateReleaseEventIn("CROW-10X", 10*time.Hour)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -100,11 +111,11 @@ func TestUpdateDataEventApi(t *testing.T) {
 		Method:   models.METHOD_POST,
 		Data:     dataRaw,
 		Headers: []models.Header{
-			models.Header{
+			{
 				Key:   "Token",
 				Value: "my-token",
 			},
-			models.Header{
+			{
 				Key:   "Content-Type",
 				Value: "application/json",
 			},
@@ -133,26 +144,5 @@ func TestDeleteEventApi(t *testing.T) {
 	if err != nil {
 		t.Log(err)
 		t.Fail()
-	}
-}
-
-func TestCreateEventAtApi(t *testing.T) {
-	release := time.Now().Add(1 * time.Minute)
-	for i := 1; i <= 1001; i++ {
-		keyDin := fmt.Sprintf("CROW-%d", i)
-		if err := client.SetEventAt(keyDin, release, dataEvent); err != nil {
-			t.Log(err.Error())
-			t.Fail()
-		}
-	}
-}
-func TestUpdateEventAtApi(t *testing.T) {
-	release := time.Now().Add(1 * time.Minute)
-	for i := 1; i <= 1000; i++ {
-		keyDin := fmt.Sprintf("CROW-%d", i)
-		if err := client.UpdateReleaseEventAt(keyDin, release); err != nil {
-			t.Log(err.Error())
-			t.Fail()
-		}
 	}
 }

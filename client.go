@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"git.bluebird.id/mybb/gorooster-client/v2/helpers"
-	"git.bluebird.id/mybb/gorooster-client/v2/implementors"
-	"git.bluebird.id/mybb/gorooster-client/v2/models"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/helpers"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/implementors"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 type Gorooster interface {
@@ -16,15 +16,17 @@ type Gorooster interface {
 	GetEvent(key string, target interface{}) (ttl time.Duration, err error)
 
 	// SetEvent insert your event to redis.
-	// And waiting to fire
-	SetEvent(key string, eventReleaseIn time.Duration, event models.Event) error
+	// And waiting to fire release in time.Duration
+	SetEventReleaseIn(key string, eventReleaseIn time.Duration, event models.Event) error
+
 	// SetEvent insert your event to redis.
-	// And waiting to fire
-	SetEventAt(key string, eventReleaseIn time.Time, event models.Event) error
+	// And waiting to fire relase at time.Time
+	SetEventReleaseAt(key string, eventReleaseIn time.Time, event models.Event) error
 
 	// UpdateReleaseEvent for update ttl.
 	// And rescheduling your event to fire
-	UpdateReleaseEvent(key string, eventReleaseIn time.Duration) error
+	UpdateReleaseEventIn(key string, eventReleaseIn time.Duration) error
+
 	// UpdateReleaseEvent for update ttl.
 	// And rescheduling your event to fire
 	UpdateReleaseEventAt(key string, eventReleaseIn time.Time) error
@@ -42,7 +44,7 @@ var (
 	onceAPI      sync.Once
 )
 
-func GetAPIClient(clientName, baseUrl, apiKey string) Gorooster {
+func GetAPIClient(clientName, baseUrl string) Gorooster {
 	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
 		panic("client name can not contain ':' ")
 	}
