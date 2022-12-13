@@ -73,7 +73,7 @@ func ExampleClient() {
 		JobData: job,
 	}
 	eventname:="test-event-1"  // event name can't contains ':' and must uniq
-	err := gc.SetEvent(eventname, 10*time.Second, dataEvent)
+	err := gc.SetEventReleaseIn(eventname, 10*time.Second, dataEvent)
 	if err != nil {
 		fmt.Print(err.Error())
 	}
