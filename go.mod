@@ -1,4 +1,5 @@
-module github.com/LukmanulHakim18/gorooster-client
+// module github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2
+module github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2
 
 go 1.19
 

@@ -5,11 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/LukmanulHakim18/gorooster-client/helpers"
-	"github.com/LukmanulHakim18/gorooster-client/implementors"
-	"github.com/LukmanulHakim18/gorooster-client/models"
-
-	"github.com/go-redis/redis/v8"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/helpers"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/implementors"
+	"github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
 )
 
 type Gorooster interface {
@@ -18,12 +16,20 @@ type Gorooster interface {
 	GetEvent(key string, target interface{}) (ttl time.Duration, err error)
 
 	// SetEvent insert your event to redis.
-	// And waiting to fire
-	SetEvent(key string, eventReleaseIn time.Duration, event models.Event) error
+	// And waiting to fire release in time.Duration
+	SetEventReleaseIn(key string, eventReleaseIn time.Duration, event models.Event) error
+
+	// SetEvent insert your event to redis.
+	// And waiting to fire relase at time.Time
+	SetEventReleaseAt(key string, eventReleaseIn time.Time, event models.Event) error
 
 	// UpdateReleaseEvent for update ttl.
 	// And rescheduling your event to fire
-	UpdateReleaseEvent(key string, eventReleaseIn time.Duration) error
+	UpdateReleaseEventIn(key string, eventReleaseIn time.Duration) error
+
+	// UpdateReleaseEvent for update ttl.
+	// And rescheduling your event to fire
+	UpdateReleaseEventAt(key string, eventReleaseIn time.Time) error
 
 	// Update data event if still exist in redis
 	UpdateDataEvent(key string, event models.Event) error
@@ -34,33 +40,11 @@ type Gorooster interface {
 }
 
 var (
-	goroosterRedis *implementors.GoroosterRedisImpl
-	goroosterAPI   *implementors.GoroosterAPIImpl
-	onceRedis      sync.Once
-	onceAPI        sync.Once
+	goroosterAPI *implementors.GoroosterAPIImpl
+	onceAPI      sync.Once
 )
 
-func GetRedisClient(clientName, host, pass string, db int) Gorooster {
-	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
-		panic("client name can not contain ':' ")
-	}
-	onceRedis.Do(func() {
-		if goroosterRedis == nil {
-			redisDB := redis.NewClient(&redis.Options{
-				Addr:     host,
-				DB:       db,
-				Password: pass,
-			})
-			goroosterRedis = &implementors.GoroosterRedisImpl{
-				DB:         redisDB,
-				ClientName: clientName,
-			}
-		}
-	})
-	return goroosterRedis
-}
-
-func GetAPIClient(clientName, baseUrl, apiKey string) Gorooster {
+func GetAPIClient(clientName, baseUrl string) Gorooster {
 	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
 		panic("client name can not contain ':' ")
 	}
