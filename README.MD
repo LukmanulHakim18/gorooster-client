@@ -23,7 +23,7 @@ go mod init github.com/my/repo
 And instal the lib
 
 ```go
-go get github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2
+go get git.bluebird.id/mybb/gorooster-client/v2
 ```
 
 # Quickstart
@@ -35,8 +35,8 @@ import (
 	"fmt"
 	"time"
 
-	client "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2"
-	clientModels "github.com/LukmanulHakim18/gorooster-client/mybb/gorooster-client/v2/models"
+	client "git.bluebird.id/mybb/gorooster-client/v2"
+	clientModels "git.bluebird.id/mybb/gorooster-client/v2/models"
 )
 
 func ExampleClient() {
