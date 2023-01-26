@@ -15,7 +15,7 @@ func GenerateKeyData(clientName, key string) string {
 	return keyData
 }
 
-func ValidatorClinetNameAndKey(str string) bool {
+func ValidatorClientNameAndKey(str string) bool {
 	return !strings.Contains(str, ":")
 
 }

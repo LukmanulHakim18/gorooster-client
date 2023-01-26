@@ -45,7 +45,7 @@ var (
 )
 
 func GetAPIClient(clientName, baseUrl string) Gorooster {
-	if ok := helpers.ValidatorClinetNameAndKey(clientName); !ok {
+	if ok := helpers.ValidatorClientNameAndKey(clientName); !ok {
 		panic("client name can not contain ':' ")
 	}
 	onceAPI.Do(func() {
