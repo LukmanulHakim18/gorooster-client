@@ -12,7 +12,7 @@ This repo use for support event scheduler service [Gorooster](https://github.com
 - Update data event
 - Delete event
 
-# Instalation
+# Installation
 
 Gorooster requires a Go version with modules support. So make sure to initialize a Go module:
 
@@ -26,7 +26,7 @@ And instal the lib
 go get github.com/LukmanulHakim18/gorooster-client
 ```
 
-# Quickstart
+# Quick start
 
 ## connection via rest-api
 
@@ -72,8 +72,8 @@ func ExampleClient() {
 		Type:    "api_event",
 		JobData: job,
 	}
-	eventname:="test-event-1"  // event name can't contains ':' and must uniq
-	err := gc.SetEventReleaseIn(eventname, 10*time.Second, dataEvent)
+	eventName:="test-event-1"  // event name can't contains ':' and must uniq
+	err := gc.SetEventReleaseIn(eventName, 10*time.Second, dataEvent)
 	if err != nil {
 		fmt.Print(err.Error())
 	}
