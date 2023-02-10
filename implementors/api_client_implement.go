@@ -133,7 +133,7 @@ func CekResponseHttp(res *http.Response) (err error) {
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
 		StdError := helpers.Error{}
 		err = json.NewDecoder(res.Body).Decode(&StdError)
-		if err != nil {
+		if err == nil {
 			return
 		}
 		return fmt.Errorf("status_code: %d, endpoint: %s, message: %s", res.StatusCode, res.Request.URL, StdError.ErrorMessage)
